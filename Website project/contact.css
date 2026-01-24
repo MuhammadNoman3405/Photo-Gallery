@@ -1,0 +1,33 @@
+body { background:url(https://wallpaperaccess.com/full/3124570.jpg);
+  background-size: cover; 
+  background-repeat: no-repeat;}
+  form { max-width:420px; margin:100px auto; }
+  
+  .feedback-input {
+    color:black;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight:500;
+    font-size: 18px;
+    border-radius: 10px;
+    line-height: 22px;
+    background-color:chartreuse;
+    border:5px solid brown;
+    transition: all 0.3s;
+    padding: 13px;
+    margin-bottom: 15px;
+    width:100%;
+    box-sizing: border-box;
+    outline:0;
+  }
+  .submit{
+    size: 5px;
+    color:black;
+    background-color:blue;
+    background-size: 5px;
+  }
+  
+  
+  .feedback-input:focus { border:2px solid green; }
+  
+  textarea {
+    height: 150px;}

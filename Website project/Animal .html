@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Document</title>
+  <style>body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    --line-offset: calc((10vh + 8px) / 2);
+  }
+  
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 5fr 1fr;
+    background: #021919;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    display: flex;
+  }
+  
+  .tab {
+    width: calc(10vh + 8px);
+    height: calc(10vh + 8px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    shape-outside: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    z-index: 0;
+    transition: width 0.5s;
+  }
+  
+  .tab img {
+    width: 10vh;
+    height: 10vh;
+    z-index: 10;
+    cursor: pointer;
+    clip-path: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    shape-outside: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    transition: width 0.5s;
+  }
+  
+  [type=radio] {
+    display: none;   
+  }
+  
+  .preview-list {
+    background: linear-gradient(
+        #021919,
+        #021919 var(--line-offset),
+        #efefef var(--line-offset)
+    );
+  }
+  
+  .tab {
+    background: linear-gradient(
+        #efefef,
+        #efefef var(--line-offset),
+        #021919 var(--line-offset)
+    );
+  }
+  
+  [type=radio]:checked ~ label ~ .content{
+    text-align: center;
+    z-index: 8;
+  }
+  
+  
+  [type=radio]:checked ~ label .tab{
+    width: 0;
+  }
+  
+  .content {
+    position: absolute;
+    background: #021919;
+    top: 1vh;
+    left: 0;
+    width: 100vw;
+    height: 80vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  
+  .content img {
+    height: auto;
+    width: 100vw;  
+  }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="full-view"></div>
+        <div class="preview-list">
+            <ul>
+                <li>
+                    <input type="radio" id="tab-1" name="gallery-group">
+                    <label for="tab-1">
+                        <div class="tab">
+                            <img
+                                src="https://4.bp.blogspot.com/-DGKSteNl6dU/U95yYFA80wI/AAAAAAAABFg/_dluTkX9f2o/s1600/33.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                        <img
+                            src="http://1.bp.blogspot.com/-U2fb0JM3_5g/T4SGzJs6V2I/AAAAAAAAoVw/jGk3iivNBcM/s1600/18.jpg" />
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-2" name="gallery-group">
+                    <label for="tab-2">
+                        <div class="tab">
+                            <img
+                                src="https://tse3.mm.bing.net/th?id=OIP.vcQSdEYBn57cqH8EGVf76QHaD4&pid=Api&P=0&h=220" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://1.bp.blogspot.com/-V0qZevO07RI/Uw8tsAYWYYI/AAAAAAAABR4/kSN5hFsKejI/s1600/beautiful_nature_4.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-3" name="gallery-group">
+                    <label for="tab-3">
+                        <div class="tab">
+                            <img
+                                src="https://cdn.acidcow.com/pics/20111028/animals_45.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://4.bp.blogspot.com/-3YUcEUYb_Dg/ToM1DspYJcI/AAAAAAAAABM/qcfWvEUI7xw/s1600/hd-animals-wallpaper-shero-wallpapers-2.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-4" name="gallery-group">
+                    <label for="tab-4">
+                        <div class="tab">
+                            <img
+                                src="http://3.bp.blogspot.com/-hBU6aB3D-og/T6qFQ3Y1pcI/AAAAAAAAGEQ/xIccAeplUCQ/s1600/Amazing+Animals+Wallpapers29.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://tse1.mm.bing.net/th?id=OIP.7zMcXQ9mfiYqTX0oRWxh4QHaE8&pid=Api&P=0&h=220" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-5" name="gallery-group">
+                    <label for="tab-5">
+                        <div class="tab">
+                            <img
+                                src="http://3.bp.blogspot.com/_WOWQJUlRtKQ/TP_HkoO5qvI/AAAAAAAAAnI/oU0T5ZN4uX4/s1600/Amazing+Animal+Photographs+WallPaper+4.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://img.xcitefun.net/users/2014/07/358796,xcitefun-animals-closeup-12.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-6" name="gallery-group">
+                    <label for="tab-6">
+                        <div class="tab">
+                            <img
+                                src="http://3.bp.blogspot.com/-nRoeyLlZH44/UBUZBN0-4EI/AAAAAAAAPoI/kLXM5E1OpkU/s1600/wildlife+photography+%25285%2529.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://www.wallpaperup.com/uploads/wallpapers/2015/02/08/615812/d414a8238643bac4df2a81e5fd9844dc.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-7" name="gallery-group">
+                    <label for="tab-7">
+                        <div class="tab">
+                            <img
+                                src="http://4.bp.blogspot.com/-xfuatZg5gRw/T6qEKKJLNeI/AAAAAAAAGCQ/JMZx_nt23vg/s1600/Amazing+Animals+Wallpapers+25.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://1.bp.blogspot.com/-wfyuSK2XO8Q/UFMxUpzRUtI/AAAAAAAAD-0/BrXzW7Du5n8/s1600/25-Most-Beautiful-Animals-Photography-StumbleUpon-2.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-8" name="gallery-group">
+                    <label for="tab-8">
+                        <div class="tab">
+                            <img
+                                src="https://cdn.lolwot.com/wp-content/uploads/2015/08/20-amazing-and-interesting-facts-about-animals-you-may-not-know-9.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://tse1.mm.bing.net/th?id=OIP.eIP6Ust_5qVxduCg_XyDnAHaEo&pid=Api&P=0&h=220" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-9" name="gallery-group">
+                    <label for="tab-9">
+                        <div class="tab">
+                            <img
+                                src="https://1.bp.blogspot.com/-jz7h_iRQ4G0/VHGDWinw3fI/AAAAAAAAA4s/oHwbMC2flCw/s1600/amazing%2Bnature.jpeg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://images.saymedia-content.com/.image/t_share/MTc2MjQ5MTQ2MDc4OTk1ODgx/20-unique-and-amazing-animals.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-10" name="gallery-group">
+                    <label for="tab-10">
+                        <div class="tab">
+                            <img
+                                src="https://pbs.twimg.com/profile_images/449444408883036160/qu88X2mZ_400x400.jpeg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://2.bp.blogspot.com/-vWtJmv7aT4M/Tbpycl98X9I/AAAAAAAADzc/UaNzpkXxD8Y/s1600/amazing_animal_pictures_07.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-11" name="gallery-group">
+                    <label for="tab-11">
+                        <div class="tab">
+                            <img
+                                src="https://4.bp.blogspot.com/-rIuKiT7XPUU/TpJ4T6RNtvI/AAAAAAAABlI/gbACczNkADU/s1600/Amazing-Wildlife-Photo-5.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://2.bp.blogspot.com/-QZPhPKtZ8Kk/T4SHC7h_QkI/AAAAAAAAoWo/5SLbhwIjakQ/s1600/24.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-12" name="gallery-group">
+                    <label for="tab-12">
+                        <div class="tab">
+                            <img
+                                src="http://1.bp.blogspot.com/-7-_a-T0b7GU/Tp_UIgGUcvI/AAAAAAAAAdw/j85aQL0_tZk/s1600/6-funny-wild-animals-3-1-9.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://cdn.fodors.com/wp-content/uploads/2017/10/10-Amazing-Animals-Galapagos-Animal-5.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-13" name="gallery-group">
+                    <label for="tab-13">
+                        <div class="tab">
+                            <img
+                                src="https://4.bp.blogspot.com/-qBtelwNeV9k/TdzgQB-sHhI/AAAAAAAAAqE/MpsODnHLiJM/s1600/Jaraf+With+Her+Child.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://getwallpapers.com/wallpaper/full/c/5/3/151814.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-14" name="gallery-group">
+                    <label for="tab-14">
+                        <div class="tab">
+                            <img
+                                src="http://4.bp.blogspot.com/_IX8poG1JX9c/TFl8Ffjnq1I/AAAAAAAADL4/yO3UTevkIT8/s800/beautiful_animal_photo_24.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://4.bp.blogspot.com/-Jg8zL34UEUs/TqBVoNqQX2I/AAAAAAAABHk/osLciTTvMRg/s1600/Amazing+Animal+Wallpapers+%25285%2529.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-15" name="gallery-group">
+                    <label for="tab-15">
+                        <div class="tab">
+                            <img
+                                src="https://cdn.acidcow.com/pics/20110505/other/15/amazing_animal_photos_01.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://1.bp.blogspot.com/-2d8fbB7mJSo/Tq8xSpSg4PI/AAAAAAAAKdA/QpwdZbV2VnU/s1600/Amazing+Animals-image0066.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-16" name="gallery-group">
+                    <label for="tab-16">
+                        <div class="tab">
+                            <img
+                                src="https://wallpapertag.com/wallpaper/full/e/8/0/114210-amazing-animal-wallpapers-1920x1200-photos.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://1.bp.blogspot.com/-RmVVZbjzBzU/T4SH7hPkfbI/AAAAAAAAoZY/pRe-rV8kMH0/s1600/8.jpg" />
+                        </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

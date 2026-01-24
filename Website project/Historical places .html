@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Document</title>
+  <style>body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    --line-offset: calc((10vh + 8px) / 2);
+  }
+  
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 5fr 1fr;
+    background: #021919;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    display: flex;
+  }
+  
+  .tab {
+    width: calc(10vh + 8px);
+    height: calc(10vh + 8px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    shape-outside: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    z-index: 0;
+    transition: width 0.5s;
+  }
+  
+  .tab img {
+    width: 10vh;
+    height: 10vh;
+    z-index: 10;
+    cursor: pointer;
+    clip-path: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    shape-outside: polygon(0% 50%, 15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%);
+    transition: width 0.5s;
+  }
+  
+  [type=radio] {
+    display: none;   
+  }
+  
+  .preview-list {
+    background: linear-gradient(
+        #021919,
+        #021919 var(--line-offset),
+        #efefef var(--line-offset)
+    );
+  }
+  
+  .tab {
+    background: linear-gradient(
+        #efefef,
+        #efefef var(--line-offset),
+        #021919 var(--line-offset)
+    );
+  }
+  
+  [type=radio]:checked ~ label ~ .content{
+    text-align: center;
+    z-index: 8;
+  }
+  
+  
+  [type=radio]:checked ~ label .tab{
+    width: 0;
+  }
+  
+  .content {
+    position: absolute;
+    background: #021919;
+    top: 1vh;
+    left: 0;
+    width: 100vw;
+    height: 80vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  
+  .content img {
+    height: auto;
+    width: 100vw;  
+  }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="full-view"></div>
+        <div class="preview-list">
+            <ul>
+             
+                <li>
+                    <input type="radio" id="tab-5" name="gallery-group">
+                    <label for="tab-5">
+                        <div class="tab">
+                            <img
+                                src="http://www.uniworldnews.org/wp-content/uploads/2014/01/Stonehenge.jpeg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://wallpapercave.com/wp/wp8738941.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-6" name="gallery-group">
+                    <label for="tab-6">
+                        <div class="tab">
+                            <img
+                                src="https://www.fodors.com/wp-content/uploads/2019/03/11_10AllAmericanLandmarks__FortJeffersonNationalMonument_shutterstock_1163683264.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://cdn.onlyinyourstate.com/wp-content/uploads/2016/04/Jefferson-Davis-Monument-at-258-Pembroke-Fairview-Road-in-Pembroke..jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-7" name="gallery-group">
+                    <label for="tab-7">
+                        <div class="tab">
+                            <img
+                                src="https://i0.wp.com/files.tripstodiscover.com/files/2017/04/Dahlonega-Gold-Museum-State-Historic-Site-1.jpg?resize=1568%2c1176" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://www.gannett-cdn.com/-mm-/515d7e7e5c093f0409b906c9c0aff0cf516769b9/c=0-89-960-631/local/-/media/2018/06/07/Burlington/Burlington/636639867690694152-House-and-Garden.jpg?width=3200&height=1680&fit=crop" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-8" name="gallery-group">
+                    <label for="tab-8">
+                        <div class="tab">
+                            <img
+                                src="https://zameenblog.s3.amazonaws.com/blog/wp-content/uploads/2019/11/cover-image-19.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://noatechtravel.files.wordpress.com/2019/06/historical-places-in-pakistan.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-9" name="gallery-group">
+                    <label for="tab-9">
+                        <div class="tab">
+                            <img
+                                src="https://www.oyorooms.com/blog/wp-content/uploads/2017/10/Feature-Image-min-14.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://www.oyorooms.com/blog/wp-content/uploads/2017/10/Feature-Image-min-14.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-10" name="gallery-group">
+                    <label for="tab-10">
+                        <div class="tab">
+                            <img
+                                src="https://cdn.cdnparenting.com/articles/2019/03/07114255/1143490766-H.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="http://www.travelsiteindia.com/blog/wp-content/uploads/2018/05/ranthambore-fort-famous-historical-places-in-rajasthan.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-11" name="gallery-group">
+                    <label for="tab-11">
+                        <div class="tab">
+                            <img
+                                src="https://www.oyorooms.com/blog/wp-content/uploads/2017/10/Amber-Fort-min-min.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://3.bp.blogspot.com/-K71iOiqzMr8/WSo8OcPqB3I/AAAAAAAAOIM/XvorF2359qw18MsXve34gUwT3r97hwzCQCLcB/s1600/qutub%2Bminar.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-12" name="gallery-group">
+                    <label for="tab-12">
+                        <div class="tab">
+                            <img
+                                src="https://voiceofadventure.com/wp-content/uploads/2021/05/India-Gate-e1621435083365.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://regal-holidays.net/wp-content/uploads/2017/04/taj-mahal-agra-india-P3CHN69_1.jpg" />
+                        </div>
+                </li>
+                <li>
+                    <input type="radio" id="tab-13" name="gallery-group">
+                    <label for="tab-13">
+                        <div class="tab">
+                            <img
+                                src="https://blogs.revv.co.in/blogs/wp-content/uploads/2020/07/kolkata.jpg" />
+                        </div>
+                    </label>
+                    <div class="content">
+                            <img src="https://www.oyorooms.com/blog/wp-content/uploads/2017/10/4-min-3.jpg" />
+                        </div>
+                </li>
+         
+            </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
