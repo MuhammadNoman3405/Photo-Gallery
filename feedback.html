@@ -71,7 +71,12 @@
 
     <nav>
         <div class="logo">PHOTO.3D</div>
-        <ul class="nav-links">
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
             <li><a href="index.html">Gallery</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="feedback.html" class="active">Feedback</a></li>
@@ -110,13 +115,25 @@
             
             if (token && username) {
                 document.getElementById('fbName').value = username;
-                document.getElementById('navAuthLink').textContent = 'Logout';
-                document.getElementById('navAuthLink').href = '#';
-                document.getElementById('navAuthLink').onclick = () => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('username');
-                    window.location.reload();
-                };
+                const authLink = document.getElementById('navAuthLink');
+                if (authLink) {
+                    authLink.textContent = 'Logout';
+                    authLink.href = '#';
+                    authLink.onclick = () => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('username');
+                        window.location.reload();
+                    };
+                }
+            }
+
+            // Mobile Menu Toggle
+            const menu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            if (menu && navLinks) {
+                menu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
             }
         });
 

@@ -242,14 +242,51 @@ header p {
     cursor: pointer;
 }
 
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 3px;
+    transition: var(--transition-smooth);
+}
+
 /* Mobile Optimizations */
 @media (max-width: 768px) {
     nav {
         padding: 1rem 5%;
     }
     
+    .menu-toggle {
+        display: flex;
+    }
+    
     .nav-links {
-        display: none; /* We can add a mobile menu later */
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 250px;
+        height: 100vh;
+        background: rgba(5, 5, 5, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.4s ease;
+        border-left: 1px solid var(--glass-border);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        right: 0;
     }
     
     main {

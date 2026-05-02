@@ -50,7 +50,12 @@
 
     <nav>
         <div class="logo">PHOTO.3D</div>
-        <ul class="nav-links">
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
             <li><a href="index.html">Gallery</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="feedback.html">Feedback</a></li>
@@ -133,6 +138,15 @@
                 document.getElementById('errorMessage').textContent = err.message || "Failed to load feedback.";
                 document.getElementById('errorMessage').style.display = 'block';
                 document.getElementById('feedbackTable').style.display = 'none';
+            }
+
+            // Mobile Menu Toggle
+            const menu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            if (menu && navLinks) {
+                menu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
             }
         });
     </script>

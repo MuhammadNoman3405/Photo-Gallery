@@ -12,7 +12,12 @@
 
     <nav>
         <div class="logo">PHOTO.3D</div>
-        <ul class="nav-links">
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
             <li><a class="filter-btn active" data-category="all">All Photos</a></li>
             <li><a class="filter-btn" data-category="nature">Nature</a></li>
             <li><a class="filter-btn" data-category="animal">Animals</a></li>
@@ -70,6 +75,15 @@
                         adminLink.style.display = 'inline';
                     }
                 }
+            }
+
+            // Mobile Menu Toggle
+            const menu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            if (menu && navLinks) {
+                menu.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
             }
         });
     </script>
