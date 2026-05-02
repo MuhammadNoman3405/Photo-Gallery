@@ -30,5 +30,16 @@ const API = {
             body: JSON.stringify({ name, email, message })
         });
         return response.json();
+    },
+
+    async getFeedback(token) {
+        const response = await fetch(`${API_BASE_URL}/api/feedback`, {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.json();
     }
 };

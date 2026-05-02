@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | 3D Google Photo Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+            text-align: left;
+        }
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        th {
+            background: rgba(255,255,255,0.05);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+        .message.error { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">PHOTO.3D</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Gallery</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+            <li><a href="admin.html" class="active" style="display:none;" id="navAdminLink">Admin</a></li>
+            <li><a href="auth.html" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Admin <span style="color: var(--accent-color);">Portal</span></h1>
+            <p>View user feedback</p>
+        </header>
+
+        <div class="admin-container">
+            <div id="errorMessage" class="message error"></div>
+            
+            <table id="feedbackTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="feedbackBody">
+                    <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="api-client.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
+            
+            if (!token || username !== 'admin') {
+                document.getElementById('errorMessage').textContent = "Unauthorized. You must be logged in as 'admin' to view this page.";
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('feedbackTable').style.display = 'none';
+                return;
+            }
+
+            // Update Nav
+            document.getElementById('navAdminLink').style.display = 'inline';
+            document.getElementById('navAuthLink').textContent = 'Logout';
+            document.getElementById('navAuthLink').href = '#';
+            document.getElementById('navAuthLink').onclick = () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                window.location.href = 'index.html';
+            };
+
+            // Fetch Feedback
+            try {
+                const data = await API.getFeedback(token);
+                if (data.error) throw new Error(data.error);
+
+                const tbody = document.getElementById('feedbackBody');
+                tbody.innerHTML = ''; // clear loading
+
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No feedback yet.</td></tr>';
+                } else {
+                    data.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${item.id}</td>
+                            <td>${item.name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.message}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                document.getElementById('errorMessage').textContent = err.message || "Failed to load feedback.";
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('feedbackTable').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

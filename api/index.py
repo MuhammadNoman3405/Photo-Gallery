@@ -94,6 +94,33 @@ def submit_feedback():
 
     return jsonify({"message": "Feedback submitted successfully"}), 201
 
+@app.route('/api/feedback', methods=['GET'])
+def get_feedback():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Missing or invalid token"}), 401
+    
+    token = auth_header.split(" ")[1]
+    try:
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        if data['username'] != 'admin':
+            return jsonify({"error": "Unauthorized"}), 403
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+
+    all_feedback = Feedback.query.all()
+    result = []
+    for f in all_feedback:
+        result.append({
+            "id": f.id,
+            "name": f.name,
+            "email": f.email,
+            "message": f.message
+        })
+    return jsonify(result), 200
+
 # For local testing
 if __name__ == '__main__':
     app.run(port=8000, debug=True)

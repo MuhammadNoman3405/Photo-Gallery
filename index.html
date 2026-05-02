@@ -19,6 +19,7 @@
             <li><a class="filter-btn" data-category="historical">Historical</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="feedback.html">Feedback</a></li>
+            <li><a href="admin.html" style="display:none;" id="navAdminLink">Admin</a></li>
             <li><a href="auth.html" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
         </ul>
     </nav>
@@ -50,6 +51,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
             if (token) {
                 const authLink = document.getElementById('navAuthLink');
                 if (authLink) {
@@ -60,6 +62,13 @@
                         localStorage.removeItem('username');
                         window.location.reload();
                     };
+                }
+                
+                if (username === 'admin') {
+                    const adminLink = document.getElementById('navAdminLink');
+                    if (adminLink) {
+                        adminLink.style.display = 'inline';
+                    }
                 }
             }
         });
