@@ -103,7 +103,7 @@ def get_feedback():
     token = auth_header.split(" ")[1]
     try:
         data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-        if data['username'] != 'admin':
+        if data['username'] != 'Noman':
             return jsonify({"error": "Unauthorized"}), 403
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token expired"}), 401
