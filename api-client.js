@@ -41,5 +41,22 @@ const API = {
             }
         });
         return response.json();
+    },
+
+    async uploadImage(token, title, category, imageData) {
+        const response = await fetch(`${API_BASE_URL}/api/images`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ title, category, image_data: imageData })
+        });
+        return response.json();
+    },
+
+    async getImages() {
+        const response = await fetch(`${API_BASE_URL}/api/images`);
+        return response.json();
     }
 };

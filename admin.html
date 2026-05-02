@@ -67,10 +67,15 @@
     <main>
         <header>
             <h1>Admin <span style="color: var(--accent-color);">Portal</span></h1>
-            <p>View user feedback</p>
+            <p>Manage Feedback and Gallery Images</p>
         </header>
 
-        <div class="admin-container">
+        <div class="form-toggle" style="display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; color: var(--text-secondary); cursor: pointer;">
+            <span id="tabFeedback" class="active" onclick="switchTab('feedback')" style="font-weight:bold; color:var(--accent-color);">View Feedback</span>
+            <span id="tabUpload" onclick="switchTab('upload')">Upload Image</span>
+        </div>
+
+        <div class="admin-container" id="feedbackSection">
             <div id="errorMessage" class="message error"></div>
             
             <table id="feedbackTable">
@@ -86,6 +91,27 @@
                     <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="admin-container" id="uploadSection" style="display:none; max-width: 600px;">
+            <div id="uploadMessage" class="message"></div>
+            <form id="uploadForm" onsubmit="handleUpload(event)">
+                <div style="margin-bottom: 1.5rem;">
+                    <input type="text" id="imgTitle" placeholder="Image Title (e.g. Majestic Mountains)" required style="width: 100%; padding: 1rem; border-radius: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: white; outline: none;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <select id="imgCategory" required style="width: 100%; padding: 1rem; border-radius: 10px; background: #1a1a1a; border: 1px solid var(--glass-border); color: white; outline: none;">
+                        <option value="nature">Nature</option>
+                        <option value="animal">Animals</option>
+                        <option value="historical">Historical</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display:block; margin-bottom: 0.5rem; color: var(--text-secondary);">Select Image File:</label>
+                    <input type="file" id="imgFile" accept="image/*" required style="width: 100%; color: white;">
+                </div>
+                <button type="submit" class="btn-submit" style="width: 100%; padding: 1rem; border-radius: 10px; background: var(--accent-color); color: white; border: none; cursor: pointer; font-weight: bold;">Upload to Gallery</button>
+            </form>
         </div>
     </main>
 
@@ -149,6 +175,61 @@
                 });
             }
         });
+
+        function switchTab(tab) {
+            document.getElementById('feedbackSection').style.display = tab === 'feedback' ? 'block' : 'none';
+            document.getElementById('uploadSection').style.display = tab === 'upload' ? 'block' : 'none';
+            document.getElementById('tabFeedback').style.color = tab === 'feedback' ? 'var(--accent-color)' : 'var(--text-secondary)';
+            document.getElementById('tabFeedback').style.fontWeight = tab === 'feedback' ? 'bold' : 'normal';
+            document.getElementById('tabUpload').style.color = tab === 'upload' ? 'var(--accent-color)' : 'var(--text-secondary)';
+            document.getElementById('tabUpload').style.fontWeight = tab === 'upload' ? 'bold' : 'normal';
+        }
+
+        async function handleUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById('imgTitle').value;
+            const category = document.getElementById('imgCategory').value;
+            const fileInput = document.getElementById('imgFile');
+            const file = fileInput.files[0];
+            const token = localStorage.getItem('token');
+
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit for base64 sanity
+                alert("File is too large! Please select an image under 2MB.");
+                return;
+            }
+
+            const uploadBtn = e.target.querySelector('button');
+            uploadBtn.textContent = 'Uploading...';
+            uploadBtn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const base64String = reader.result;
+                try {
+                    const res = await API.uploadImage(token, title, category, base64String);
+                    if (res.error) throw new Error(res.error);
+                    
+                    const msg = document.getElementById('uploadMessage');
+                    msg.textContent = "Image uploaded successfully! It is now live on the Gallery.";
+                    msg.className = "message success";
+                    msg.style.display = "block";
+                    msg.style.background = "rgba(34, 197, 94, 0.2)";
+                    msg.style.color = "#22c55e";
+                    
+                    e.target.reset();
+                } catch (err) {
+                    const msg = document.getElementById('uploadMessage');
+                    msg.textContent = err.message || "Failed to upload image.";
+                    msg.className = "message error";
+                    msg.style.display = "block";
+                } finally {
+                    uploadBtn.textContent = 'Upload to Gallery';
+                    uploadBtn.disabled = false;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
     </script>
 </body>
 </html>

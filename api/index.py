@@ -32,6 +32,13 @@ class Feedback(db.Model):
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.Text, nullable=False)
 
+class GalleryImage(db.Model):
+    __tablename__ = 'gallery_images'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    image_data = db.Column(db.Text, nullable=False) # Base64 string
+
 # Ensure tables are created (especially helpful for local SQLite)
 with app.app_context():
     db.create_all()
@@ -118,6 +125,47 @@ def get_feedback():
             "name": f.name,
             "email": f.email,
             "message": f.message
+        })
+    return jsonify(result), 200
+
+@app.route('/api/images', methods=['POST'])
+def upload_image():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Missing or invalid token"}), 401
+    
+    token = auth_header.split(" ")[1]
+    try:
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        if data['username'] != 'Noman':
+            return jsonify({"error": "Unauthorized"}), 403
+    except Exception:
+        return jsonify({"error": "Invalid or expired token"}), 401
+
+    payload = request.get_json()
+    if not payload or not payload.get('title') or not payload.get('category') or not payload.get('image_data'):
+        return jsonify({"error": "Missing fields"}), 400
+
+    new_image = GalleryImage(
+        title=payload['title'],
+        category=payload['category'],
+        image_data=payload['image_data']
+    )
+    db.session.add(new_image)
+    db.session.commit()
+
+    return jsonify({"message": "Image uploaded successfully", "id": new_image.id}), 201
+
+@app.route('/api/images', methods=['GET'])
+def get_images():
+    images = GalleryImage.query.order_by(GalleryImage.id.desc()).all()
+    result = []
+    for img in images:
+        result.append({
+            "id": img.id,
+            "title": img.title,
+            "category": img.category,
+            "src": img.image_data
         })
     return jsonify(result), 200
 

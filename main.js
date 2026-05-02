@@ -1,20 +1,4 @@
-const images = [
-    { src: 'Website project/images/nature 01.jpg', title: 'Serene Landscape', category: 'nature' },
-    { src: 'Website project/images/nature 03.jpg', title: 'Mountain Peaks', category: 'nature' },
-    { src: 'Website project/images/nature 04.jpg', title: 'Forest Path', category: 'nature' },
-    { src: 'Website project/images/1.jpg', title: 'Wild Elegance', category: 'animal' },
-    { src: 'Website project/images/2.jpg', title: 'Jungle King', category: 'animal' },
-    { src: 'Website project/images/his 1.jpg', title: 'Ancient Echoes', category: 'historical' },
-    { src: 'Website project/images/nature 05.jpg', title: 'Golden Hour', category: 'nature' },
-    { src: 'Website project/images/3.jpg', title: 'Hidden Valley', category: 'nature' },
-    { src: 'Website project/images/4.jpg', title: 'Wildlife Close-up', category: 'animal' },
-    { src: 'Website project/images/5.jpg', title: 'Historic Majesty', category: 'historical' },
-    { src: 'Website project/images/nature 06.jpg', title: 'Ocean Breeze', category: 'nature' },
-    { src: 'Website project/images/6.jpg', title: 'Tropical Paradise', category: 'nature' },
-    { src: 'Website project/images/7.jpg', title: 'Graceful Birds', category: 'animal' },
-    { src: 'Website project/images/8.jpg', title: 'Epic Monuments', category: 'historical' },
-    { src: 'Website project/images/nature 07.jpg', title: 'Misty Mornings', category: 'nature' },
-];
+let images = []; // Will be loaded from the database
 
 const galleryGrid = document.getElementById('galleryGrid');
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -23,9 +7,27 @@ const lightboxImg = document.getElementById('lightboxImg');
 const downloadLink = document.getElementById('downloadLink');
 const closeLightbox = document.querySelector('.close-lightbox');
 
-// Load Images
+// Load Images from DB
+async function initializeGallery() {
+    try {
+        const fetchedImages = await API.getImages();
+        if (!fetchedImages.error) {
+            images = fetchedImages;
+        }
+    } catch (err) {
+        console.error("Failed to load images from database", err);
+    }
+    loadGallery();
+}
+
 function loadGallery(category = 'all') {
     galleryGrid.innerHTML = '';
+    
+    if (images.length === 0) {
+        galleryGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: var(--text-secondary);">No images found in the gallery. Admin needs to upload some!</p>';
+        return;
+    }
+
     const filtered = category === 'all' ? images : images.filter(img => img.category === category);
 
     filtered.forEach((img, index) => {
@@ -146,7 +148,7 @@ filterBtns.forEach(btn => {
 });
 
 // Initial Load
-loadGallery();
+initializeGallery();
 
 // Scroll effect for navbar
 window.addEventListener('scroll', () => {
