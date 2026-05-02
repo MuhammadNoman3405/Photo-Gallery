@@ -1,9 +1,8 @@
 // Configuration for the Vercel Backend
 // When running locally with Flask, it uses http://127.0.0.1:8000
 // When deploying, change this to your Vercel URL (e.g., https://your-project.vercel.app)
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://127.0.0.1:8000' 
-    : ''; // Leave empty if Vercel hosts both, or put full Vercel URL if hosting frontend on GitHub Pages
+const API_BASE_URL = 'https://photo-gallery-one-brown.vercel.app/';
+
 
 const API = {
     async login(email, password) {
