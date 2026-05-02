@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Google Photo Gallery | Premium Experience</title>
+    <meta name="description" content="A stunning 3D photo gallery experience with advanced visual effects and premium design.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">PHOTO.3D</div>
+        <ul class="nav-links">
+            <li><a class="filter-btn active" data-category="all">All Photos</a></li>
+            <li><a class="filter-btn" data-category="nature">Nature</a></li>
+            <li><a class="filter-btn" data-category="animal">Animals</a></li>
+            <li><a class="filter-btn" data-category="historical">Historical</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+            <li><a href="auth.html" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Discover the <span style="color: var(--accent-color);">Dimension</span></h1>
+            <p>Experience your memories in a whole new perspective. A premium 3D gallery designed for visual excellence.</p>
+        </header>
+
+        <div class="gallery-container">
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Dynamic Content Loads Here -->
+            </div>
+        </div>
+    </main>
+
+    <div id="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Full view">
+            <div style="margin-top: 1rem; text-align: center;">
+                <a id="downloadLink" href="" download class="btn-download">Download Original HD</a>
+            </div>
+        </div>
+    </div>
+    <script src="api-client.js"></script>
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const authLink = document.getElementById('navAuthLink');
+                if (authLink) {
+                    authLink.textContent = 'Logout';
+                    authLink.href = '#';
+                    authLink.onclick = () => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('username');
+                        window.location.reload();
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html>

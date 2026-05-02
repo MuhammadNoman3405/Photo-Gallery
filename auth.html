@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | 3D Google Photo Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+        .form-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .form-toggle span {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .form-toggle span.active {
+            color: var(--accent-color);
+            font-weight: 800;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+        .form-group input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: 1rem;
+        }
+        .btn-submit:hover {
+            background: #7c3aed;
+            transform: scale(1.02);
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+        .message.error { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .message.success { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">PHOTO.3D</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Gallery</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+            <li><a href="auth.html" class="active" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Join the <span style="color: var(--accent-color);">Dimension</span></h1>
+        </header>
+
+        <div class="auth-container">
+            <div id="authMessage" class="message"></div>
+
+            <div id="loggedInView" style="display: none; text-align: center;">
+                <p style="margin-bottom: 2rem; font-size: 1.2rem;">Welcome back, <span id="welcomeName" style="color: var(--accent-color); font-weight: bold;"></span>!</p>
+                <button onclick="logout()" class="btn-submit">Logout</button>
+            </div>
+
+            <div id="authForms">
+                <div class="form-toggle">
+                    <span id="loginToggle" class="active" onclick="toggleForm('login')">Login</span>
+                    <span id="signupToggle" onclick="toggleForm('signup')">Sign Up</span>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
+                </form>
+
+                <form id="signupForm" onsubmit="handleSignup(event)" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="signupUsername" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signupEmail" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signupPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="api-client.js"></script>
+    <script>
+        function toggleForm(type) {
+            document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+            document.getElementById('signupForm').style.display = type === 'signup' ? 'block' : 'none';
+            document.getElementById('loginToggle').classList.toggle('active', type === 'login');
+            document.getElementById('signupToggle').classList.toggle('active', type === 'signup');
+            document.getElementById('authMessage').style.display = 'none';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const res = await API.login(email, password);
+                if (res.error) throw new Error(res.error);
+                
+                localStorage.setItem('token', res.token);
+                localStorage.setItem('username', res.username);
+                window.location.href = 'index.html';
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            try {
+                const res = await API.signup(username, email, password);
+                if (res.error) throw new Error(res.error);
+                
+                localStorage.setItem('token', res.token);
+                localStorage.setItem('username', res.username);
+                window.location.href = 'index.html';
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        }
+
+        function showMessage(text, type) {
+            const msgEl = document.getElementById('authMessage');
+            msgEl.textContent = text;
+            msgEl.className = 'message ' + type;
+            msgEl.style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            window.location.reload();
+        }
+
+        // Check login state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                document.getElementById('authForms').style.display = 'none';
+                document.getElementById('loggedInView').style.display = 'block';
+                document.getElementById('welcomeName').textContent = localStorage.getItem('username');
+                document.getElementById('navAuthLink').textContent = 'Logout';
+                document.getElementById('navAuthLink').href = '#';
+                document.getElementById('navAuthLink').onclick = logout;
+            }
+        });
+    </script>
+</body>
+</html>

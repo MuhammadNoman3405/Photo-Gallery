@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | 3D Google Photo Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+        .about-container h2 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+        .about-container p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">PHOTO.3D</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Gallery</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+            <li><a href="auth.html" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>Discover Our <span style="color: var(--accent-color);">Story</span></h1>
+        </header>
+
+        <div class="about-container">
+            <h2>Welcome to Google Photo Gallery!</h2>
+            <p>Discover the beauty of nature through our collection of stunning photos and images.</p>
+            <p>Our passion is to showcase the beauty of moments captured through the lens.</p>
+            <p>We are a community of photographers and enthusiasts, sharing inspiration, knowledge and love for all things visual.</p>
+            <p>Join us as we explore the world one frame at a time.</p>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const authLink = document.getElementById('navAuthLink');
+                if (authLink) {
+                    authLink.textContent = 'Logout';
+                    authLink.href = '#';
+                    authLink.onclick = () => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('username');
+                        window.location.reload();
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html>

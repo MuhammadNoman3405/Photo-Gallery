@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | 3D Google Photo Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .feedback-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition-smooth);
+            font-family: 'Inter', sans-serif;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .btn-submit:hover {
+            background: #7c3aed;
+            transform: scale(1.02);
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+        .message.success { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .message.error { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">PHOTO.3D</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Gallery</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="feedback.html" class="active">Feedback</a></li>
+            <li><a href="auth.html" id="navAuthLink" style="color: var(--accent-color); font-weight: 600;">Login / Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h1>We Value Your <span style="color: var(--accent-color);">Feedback</span></h1>
+        </header>
+
+        <div class="feedback-container">
+            <div id="feedbackMessage" class="message"></div>
+            
+            <form id="feedbackForm" onsubmit="handleFeedback(event)">
+                <div class="form-group">
+                    <input type="text" id="fbName" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="fbEmail" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="fbMessage" placeholder="Your Comments / Feedback" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Submit Feedback</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="api-client.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
+            
+            if (token && username) {
+                document.getElementById('fbName').value = username;
+                document.getElementById('navAuthLink').textContent = 'Logout';
+                document.getElementById('navAuthLink').href = '#';
+                document.getElementById('navAuthLink').onclick = () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('username');
+                    window.location.reload();
+                };
+            }
+        });
+
+        async function handleFeedback(e) {
+            e.preventDefault();
+            const name = document.getElementById('fbName').value;
+            const email = document.getElementById('fbEmail').value;
+            const message = document.getElementById('fbMessage').value;
+            const msgEl = document.getElementById('feedbackMessage');
+            
+            try {
+                const res = await API.submitFeedback(name, email, message);
+                if (res.error) throw new Error(res.error);
+                
+                msgEl.textContent = res.message;
+                msgEl.className = 'message success';
+                msgEl.style.display = 'block';
+                document.getElementById('feedbackForm').reset();
+            } catch (err) {
+                msgEl.textContent = err.message || 'Failed to submit feedback.';
+                msgEl.className = 'message error';
+                msgEl.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
